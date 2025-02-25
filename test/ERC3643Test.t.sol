@@ -4,8 +4,8 @@ pragma solidity 0.8.17;
 import {console} from "forge-std/console.sol";
 import {Test} from "forge-std/Test.sol";
 
-import {ABToken} from "../src/ABToken.sol";
-import {RWAComplianceModule} from "../src/compliances/RWACompliance.sol";
+import {RWAToken} from "../src/RWAToken.sol";
+import {FinancialCompliance} from "../src/compliances/FinancialCompliance.sol";
 
 import {MockIdentityRegistry} from "./mocks/IdentityRegistryMock.sol";
 import {MockModularCompliance} from "./mocks/ModularComplianceMock.sol";
@@ -16,15 +16,15 @@ import {IdentityRegistryStorageMock} from "./mocks/utils/IdentityRegistryStorage
 
 import {IIdentity} from "@onchain-id/solidity/contracts/interface/IIdentity.sol";
 
-import {NotApprovedBuyer} from "../src/compliances/RWAComplianceErrors.sol";
+import {NotApprovedBuyer} from "../src/compliances/FinancialComplianceErrors.sol";
 
 contract ERC3643IntegrationTest is Test {
     address public owner;
     uint256 private _ownerPrivateKey;
 
     /// @dev Instâncias de contrato
-    ABToken public abToken;
-    RWAComplianceModule public rwaCompliance;
+    RWAToken public rWAToken;
+    FinancialCompliance public rwaCompliance;
     MockIdentityRegistry public identityRegistry;
     MockModularCompliance public compliance;
     MockIdentityOnChainID public onchainID;
@@ -47,10 +47,10 @@ contract ERC3643IntegrationTest is Test {
         identityRegistry = new MockIdentityRegistry();
         compliance = new MockModularCompliance();
         onchainID = new MockIdentityOnChainID();
-        rwaCompliance = new RWAComplianceModule();
+        rwaCompliance = new FinancialCompliance();
 
         /// ----------------- Deploy do contrato -----------------
-        abToken = new ABToken();
+        rWAToken = new RWAToken();
         /// ------------------------------------------------------------
         /// @dev 🔹 Inicializa ownable mocks
         identityRegistryStorage.init();
@@ -64,10 +64,10 @@ contract ERC3643IntegrationTest is Test {
         compliance.init();
         rwaCompliance.init(5000 ether);
 
-        abToken.init(
+        rWAToken.init(
             address(identityRegistry),
             address(compliance),
-            "TestABToken",
+            "TestRWAToken",
             "TTK",
             18,
             address(onchainID)
@@ -81,14 +81,12 @@ contract ERC3643IntegrationTest is Test {
         identityRegistryStorage.addAgent(owner);
         identityRegistryStorage.addAgent(address(identityRegistry));
         identityRegistry.addAgent(owner);
-        abToken.addAgent(owner);
+        rWAToken.addAgent(owner);
         vm.stopPrank();
     }
 
-  
-
     /// ✅ Testa Mint + Compliance
-    // solhint-disable-next-line 
+    // solhint-disable-next-line
     function testMintAndTransferWithCompliance() public {
         address user1;
         address user2;
@@ -136,23 +134,23 @@ contract ERC3643IntegrationTest is Test {
         );
 
         /// 🔹 Mint para user1
-        abToken.mint(user1, mintAmount);
+        rWAToken.mint(user1, mintAmount);
 
         vm.stopPrank();
 
         /// 🔹 Despausa o token antes da transferência
         vm.startPrank(owner);
-        abToken.unpause();
+        rWAToken.unpause();
         vm.stopPrank();
 
         /// 🔹 Usuário 1 transfere tokens para Usuário 2
         vm.startPrank(user1);
-        abToken.transfer(user2, transferAmount);
+        rWAToken.transfer(user2, transferAmount);
         vm.stopPrank();
 
         /// 🔹 Verifica os saldos finais
-        uint256 user1Balance = abToken.balanceOf(user1);
-        uint256 user2Balance = abToken.balanceOf(user2);
+        uint256 user1Balance = rWAToken.balanceOf(user1);
+        uint256 user2Balance = rWAToken.balanceOf(user2);
         console.log("User1 Balance after transfer:", user1Balance);
         console.log("User2 Balance after transfer:", user2Balance);
 
@@ -169,7 +167,7 @@ contract ERC3643IntegrationTest is Test {
     }
 
     /// ✅ Testa que um usuário não aprovado **NÃO** pode transferir
-    // solhint-disable-next-line 
+    // solhint-disable-next-line
     function testTransferFailsForNonApprovedUser() public {
         address user1;
         address user2;
@@ -206,13 +204,13 @@ contract ERC3643IntegrationTest is Test {
         );
 
         /// 🔹 Mint para user1
-        abToken.mint(user1, mintAmount);
+        rWAToken.mint(user1, mintAmount);
 
         vm.stopPrank();
 
         /// 🔹 Despausa o token
         vm.startPrank(owner);
-        abToken.unpause();
+        rWAToken.unpause();
         vm.stopPrank();
 
         /// 🔹 Espera-se um revert ao transferir para user2
@@ -220,12 +218,12 @@ contract ERC3643IntegrationTest is Test {
         vm.expectRevert(
             abi.encodeWithSelector(NotApprovedBuyer.selector, user2)
         );
-        abToken.transfer(user2, transferAmount);
+        rWAToken.transfer(user2, transferAmount);
         vm.stopPrank();
     }
 
     /// ✅ Testa se remover o compliance **desbloqueia** transações
-    // solhint-disable-next-line 
+    // solhint-disable-next-line
     function testTransferAfterComplianceRemoved() public {
         address user1;
         address user2;
@@ -273,7 +271,7 @@ contract ERC3643IntegrationTest is Test {
         );
 
         /// 🔹 Mint para user1
-        abToken.mint(user1, mintAmount);
+        rWAToken.mint(user1, mintAmount);
 
         vm.stopPrank();
 
@@ -282,26 +280,26 @@ contract ERC3643IntegrationTest is Test {
         compliance.removeModule(address(rwaCompliance));
 
         /// 🔹 Despausa o token após remover o compliance
-        abToken.unpause();
+        rWAToken.unpause();
         vm.stopPrank();
 
         /// 🔹 Agora a transferência deve passar
         vm.startPrank(user1);
-        abToken.transfer(user2, transferAmount);
+        rWAToken.transfer(user2, transferAmount);
         vm.stopPrank();
 
-        uint256 user1Balance = abToken.balanceOf(user1);
-        uint256 user2Balance = abToken.balanceOf(user2);
+        uint256 user1Balance = rWAToken.balanceOf(user1);
+        uint256 user2Balance = rWAToken.balanceOf(user2);
 
         assertEq(user1Balance, mintAmount - transferAmount);
         assertEq(user2Balance, transferAmount);
     }
 
-      /// ✅ Teste de Deployment
+    /// ✅ Teste de Deployment
     function testDeployment() public view {
-        string memory tokenName = abToken.name();
+        string memory tokenName = rWAToken.name();
         console.log("Token Name:", tokenName);
-        assertEq(tokenName, "TestABToken", "Nome do token incorreto");
+        assertEq(tokenName, "TestRWAToken", "Nome do token incorreto");
 
         bool isBound = rwaCompliance.isComplianceBound(address(compliance));
         assertTrue(isBound, "O modulo de compliance nao esta vinculado");

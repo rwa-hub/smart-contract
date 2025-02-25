@@ -5,17 +5,9 @@ import {AbstractModule} from "@erc3643/contracts/compliance/modular/modules/Abst
 import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 /// 🔹 Custom Errors (para otimizar gas)
-import {
-    NotApprovedBuyer, 
-    InvalidBuyerData, 
-    NotBoundCompliance, 
-    IncomeTooLow, 
-    ComplianceCheckFailed, 
-    ComplianceAlreadyBound, 
-    UnauthorizedCaller
-} from "./RWAComplianceErrors.sol";
+import {NotApprovedBuyer, InvalidBuyerData, NotBoundCompliance, IncomeTooLow, ComplianceCheckFailed, ComplianceAlreadyBound, UnauthorizedCaller} from "./FinancialComplianceErrors.sol";
 
-contract RWAComplianceModule is AbstractModule, OwnableUpgradeable {
+contract FinancialCompliance is AbstractModule, OwnableUpgradeable {
     struct BuyerInfo {
         bool creditInsuranceApproved;
         bool serasaClearance;
@@ -150,7 +142,8 @@ contract RWAComplianceModule is AbstractModule, OwnableUpgradeable {
         address,
         address,
         uint256
-      // solhint-disable-next-line
-    ) external override {}
+    ) external override // solhint-disable-next-line
+    {
 
+    }
 }

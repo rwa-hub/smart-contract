@@ -3,11 +3,11 @@ pragma solidity 0.8.17;
 
 import {Test} from "forge-std/Test.sol";
 import {console} from "forge-std/console.sol";
-import {RWAComplianceModule} from "../src/compliances/RWACompliance.sol";
+import {FinancialCompliance} from "../src/compliances/FinancialCompliance.sol";
 import {MockModularCompliance} from "./mocks/ModularComplianceMock.sol";
 
 /// @dev imports errors
-import {IncomeTooLow, NotApprovedBuyer} from "../src/compliances/RWAComplianceErrors.sol";
+import {IncomeTooLow, NotApprovedBuyer} from "../src/compliances/FinancialComplianceErrors.sol";
 
 /**
  * @title RWAComplianceModuleTest
@@ -20,7 +20,7 @@ import {IncomeTooLow, NotApprovedBuyer} from "../src/compliances/RWAComplianceEr
  * ✅ 5. Validação de mínimo de renda e documentos necessários
  */
 contract RWAComplianceModuleTest is Test {
-    RWAComplianceModule public complianceRWAComplianceModule;
+    FinancialCompliance public complianceRWAComplianceModule;
     MockModularCompliance public complianceMock;
     address public owner;
     address public buyer;
@@ -49,7 +49,7 @@ contract RWAComplianceModuleTest is Test {
 
         vm.startPrank(owner);
 
-        complianceRWAComplianceModule = new RWAComplianceModule();
+        complianceRWAComplianceModule = new FinancialCompliance();
         complianceRWAComplianceModule.init(minIncomeRequired);
 
         complianceMock = new MockModularCompliance();
@@ -63,10 +63,8 @@ contract RWAComplianceModuleTest is Test {
         vm.stopPrank();
     }
 
-    
-
     /// @notice Testa se um comprador não qualificado é reprovado
-    // solhint-disable-next-line 
+    // solhint-disable-next-line
     function testApproveBuyer() public {
         (buyer, buyerPrivateKey) = makeAddrAndKey("buyer");
 
@@ -137,7 +135,7 @@ contract RWAComplianceModuleTest is Test {
     }
 
     /// @notice Testa se a transferência entre compradores aprovados é permitida
-    // solhint-disable-next-line 
+    // solhint-disable-next-line
     function testSuccessfulTransferBetweenApprovedUsers() public {
         uint256 initialBalance = 10_000 ether;
         uint256 transferAmount = 1_000 ether;
@@ -407,7 +405,7 @@ contract RWAComplianceModuleTest is Test {
     }
 
     /// @notice Testa o fluxo completo de validação
-      // solhint-disable-next-line 
+    // solhint-disable-next-line
     function testFullFlowValidation() public {
         vm.startPrank(owner);
         complianceRWAComplianceModule.approveBuyer(
@@ -480,7 +478,7 @@ contract RWAComplianceModuleTest is Test {
     }
 
     /// @notice Testa se o módulo foi implantado corretamente
-    // solhint-disable-next-line 
+    // solhint-disable-next-line
     function testDeployment() external view {
         console.log(
             "Compliance Module Name:",

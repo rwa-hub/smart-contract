@@ -1,6 +1,6 @@
 {
   "name": "Blockchain Development",
-  "image": "skynance/foundryup-node",
+  "image": "ghcr.io/trailofbits/eth-security-toolbox:nightly",
   "features": {},
   "postCreateCommand": "",
   "customizations": {

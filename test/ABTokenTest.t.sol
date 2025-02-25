@@ -3,7 +3,7 @@ pragma solidity 0.8.17;
 
 import {console} from "forge-std/console.sol";
 import {Test} from "forge-std/Test.sol";
-import {ABToken} from "../src/ABToken.sol";
+import {RWAToken} from "../src/RWAToken.sol";
 
 import {MockIdentityRegistry} from "./mocks/IdentityRegistryMock.sol";
 import {MockModularCompliance} from "./mocks/ModularComplianceMock.sol";
@@ -22,7 +22,7 @@ contract ERC3643Test is Test {
     uint256 private _ownerPrivateKey;
 
     /// @dev Smart contract instances
-    ABToken public abTokenInstance;
+    RWAToken public RWATokenInstance;
 
     // Mocks setups
     MockIdentityRegistry public identityRegistry;
@@ -50,7 +50,7 @@ contract ERC3643Test is Test {
         onchainID = new MockIdentityOnChainID();
 
         /// ----------------- Deploy do contrato -----------------
-        abTokenInstance = new ABToken();
+        RWATokenInstance = new RWAToken();
         /// ------------------------------------------------------------
         /// @dev 🔹 Inicializa ownable mocks
         identityRegistryStorage.init();
@@ -61,10 +61,10 @@ contract ERC3643Test is Test {
             address(claimTopicsRegistry),
             address(identityRegistryStorage)
         );
-        abTokenInstance.init(
+        RWATokenInstance.init(
             address(identityRegistry),
             address(compliance),
-            "TestABToken",
+            "TestRWAToken",
             "TTK",
             18,
             address(onchainID)
@@ -74,11 +74,9 @@ contract ERC3643Test is Test {
         identityRegistryStorage.addAgent(owner); // Owner pode modificar storage
         identityRegistryStorage.addAgent(address(identityRegistry)); // IdentityRegistry pode modificar storage
         identityRegistry.addAgent(owner); // Owner pode modificar IdentityRegistry
-        abTokenInstance.addAgent(owner); // Owner pode mintar tokens
+        RWATokenInstance.addAgent(owner); // Owner pode mintar tokens
         vm.stopPrank();
     }
-
-   
 
     function testMint() public {
         address user;
@@ -96,11 +94,11 @@ contract ERC3643Test is Test {
         );
 
         /// @dev Minta tokens para o usuário
-        abTokenInstance.mint(user, mintAmount);
+        RWATokenInstance.mint(user, mintAmount);
         vm.stopPrank();
 
         /// @dev Verifica se o usuário recebeu os tokens corretamente
-        uint256 userBalance = abTokenInstance.balanceOf(user);
+        uint256 userBalance = RWATokenInstance.balanceOf(user);
         console.log("User Balance:", userBalance);
         assertEq(userBalance, mintAmount, "Minting failed: balance incorrect");
     }
@@ -122,20 +120,20 @@ contract ERC3643Test is Test {
         );
 
         /// @dev Minta tokens para o usuário
-        abTokenInstance.mint(user, mintAmount);
+        RWATokenInstance.mint(user, mintAmount);
         vm.stopPrank();
 
         /// @dev Verifica o saldo inicial
-        uint256 initialBalance = abTokenInstance.balanceOf(user);
+        uint256 initialBalance = RWATokenInstance.balanceOf(user);
         assertEq(initialBalance, mintAmount, "Erro: saldo inicial incorreto");
 
         vm.startPrank(owner);
         /// @dev Queima tokens do usuário
-        abTokenInstance.burn(user, burnAmount);
+        RWATokenInstance.burn(user, burnAmount);
         vm.stopPrank();
 
         /// @dev Verifica o saldo após queima
-        uint256 finalBalance = abTokenInstance.balanceOf(user);
+        uint256 finalBalance = RWATokenInstance.balanceOf(user);
         assertEq(
             finalBalance,
             mintAmount - burnAmount,
@@ -159,13 +157,13 @@ contract ERC3643Test is Test {
             IIdentity(address(onchainID)),
             1
         );
-        abTokenInstance.mint(user, mintAmount);
+        RWATokenInstance.mint(user, mintAmount);
         vm.stopPrank();
 
         /// @dev Testa que um usuário sem permissão **NÃO** pode queimar tokens
         vm.startPrank(user);
         vm.expectRevert("AgentRole: caller does not have the Agent role");
-        abTokenInstance.burn(user, burnAmount);
+        RWATokenInstance.burn(user, burnAmount);
         vm.stopPrank();
     }
 
@@ -192,37 +190,40 @@ contract ERC3643Test is Test {
         );
 
         /// @dev Minta tokens para o usuário 1
-        abTokenInstance.mint(user1, mintAmount);
+        RWATokenInstance.mint(user1, mintAmount);
         vm.stopPrank();
 
         /// @dev Despausa o token
         vm.startPrank(owner);
-        abTokenInstance.unpause();
+        RWATokenInstance.unpause();
         vm.stopPrank();
 
         /// @dev Transfere tokens do usuário 1 para o usuário 2
         vm.startPrank(user1);
-        abTokenInstance.transfer(user2, transferAmount);
+        RWATokenInstance.transfer(user2, transferAmount);
         vm.stopPrank();
 
         assertEq(
-            abTokenInstance.balanceOf(user1),
+            RWATokenInstance.balanceOf(user1),
             mintAmount - transferAmount,
             "Transfer failed: sender balance incorrect"
         );
         assertEq(
-            abTokenInstance.balanceOf(user2),
+            RWATokenInstance.balanceOf(user2),
             transferAmount,
             "Transfer failed: receiver balance incorrect"
         );
     }
 
-    function testTransferFromSetup() public returns (
-        address user1,
-        address user2,
-        uint256 mintAmount,
-        uint256 transferAmount
-    ) {
+    function testTransferFromSetup()
+        public
+        returns (
+            address user1,
+            address user2,
+            uint256 mintAmount,
+            uint256 transferAmount
+        )
+    {
         uint256 user1PrivateKey;
         uint256 user2PrivateKey;
         (user1, user1PrivateKey) = makeAddrAndKey("user1");
@@ -243,8 +244,8 @@ contract ERC3643Test is Test {
             1
         );
 
-        abTokenInstance.mint(user1, mintAmount);
-        abTokenInstance.unpause();
+        RWATokenInstance.mint(user1, mintAmount);
+        RWATokenInstance.unpause();
         vm.stopPrank();
 
         return (user1, user2, mintAmount, transferAmount);
@@ -259,16 +260,16 @@ contract ERC3643Test is Test {
         ) = testTransferFromSetup();
 
         vm.startPrank(user1);
-        abTokenInstance.approve(user2, transferAmount);
+        RWATokenInstance.approve(user2, transferAmount);
         vm.stopPrank();
 
         vm.startPrank(user2);
-        abTokenInstance.transferFrom(user1, user2, transferAmount);
+        RWATokenInstance.transferFrom(user1, user2, transferAmount);
         vm.stopPrank();
 
-        uint256 user1Balance = abTokenInstance.balanceOf(user1);
-        uint256 user2Balance = abTokenInstance.balanceOf(user2);
-        uint256 allowance = abTokenInstance.allowance(user1, user2);
+        uint256 user1Balance = RWATokenInstance.balanceOf(user1);
+        uint256 user2Balance = RWATokenInstance.balanceOf(user2);
+        uint256 allowance = RWATokenInstance.allowance(user1, user2);
 
         assertEq(
             user1Balance,
@@ -283,7 +284,7 @@ contract ERC3643Test is Test {
         assertEq(allowance, 0, "TransferFrom failed: allowance incorrect");
     }
 
-    // solhint-disable-next-line 
+    // solhint-disable-next-line
     function testPauseAndUnpause() public {
         address user1;
         uint256 user1PrivateKey;
@@ -301,37 +302,44 @@ contract ERC3643Test is Test {
             1
         );
 
+        /// registrar o owner antes de qualquer acao.
+        identityRegistry.registerIdentity(
+            owner,
+            IIdentity(address(onchainID)),
+            1
+        );
+
         /// 🔹 Minta tokens para o usuário antes de pausar
-        abTokenInstance.mint(user1, mintAmount);
+        RWATokenInstance.mint(user1, mintAmount);
         vm.stopPrank();
 
         /// 🔹 Tenta transferir tokens enquanto pausado (deve falhar)
         vm.startPrank(user1);
         vm.expectRevert("Pausable: paused");
-        abTokenInstance.transfer(owner, transferAmount);
+        RWATokenInstance.transfer(owner, transferAmount);
         console.log("transfer bloqueada corretamente enquanto pausado");
         vm.stopPrank();
 
         /// 🔹 Despausa antes da nova tentativa de transferência
         vm.startPrank(owner);
-        abTokenInstance.unpause();
+        RWATokenInstance.unpause();
         console.log("Contrato despausado com sucesso");
         vm.stopPrank();
 
         /// 🔹 Verifica se o contrato está realmente despausado antes de transferir
-        bool isPaused = abTokenInstance.paused();
+        bool isPaused = RWATokenInstance.paused();
         console.log("Contrato esta pausado?:", isPaused);
         assertEq(isPaused, false, "O contrato ainda esta pausado!");
 
         /// 🔹 Agora que está despausado, a transferência deve ocorrer normalmente
 
         vm.startPrank(user1);
-        abTokenInstance.transfer(owner, transferAmount);
+        RWATokenInstance.transfer(owner, transferAmount);
         console.log("transfer realizada com sucesso");
         vm.stopPrank();
 
         /// 🔹 Verifica saldo final
-        uint256 user1Balance = abTokenInstance.balanceOf(user1);
+        uint256 user1Balance = RWATokenInstance.balanceOf(user1);
         console.log("Saldo final do user1 apos a transfer:", user1Balance);
         assertEq(
             user1Balance,
@@ -340,7 +348,7 @@ contract ERC3643Test is Test {
         );
     }
 
-    // solhint-disable-next-line 
+    // solhint-disable-next-line
     function testComplianceCheck() public {
         address user1;
         address user2;
@@ -360,11 +368,11 @@ contract ERC3643Test is Test {
         );
 
         /// 🔹 Agora podemos mintar corretamente
-        abTokenInstance.mint(user1, mintAmount);
+        RWATokenInstance.mint(user1, mintAmount);
 
         /// 🔹 O contrato começa pausado, então a transferência deve falhar
         vm.expectRevert("Pausable: paused");
-        abTokenInstance.transfer(user2, transferAmount);
+        RWATokenInstance.transfer(user2, transferAmount);
 
         /// 🔹 Agora registramos a identidade do user2 antes de permitir a transferência
         identityRegistry.registerIdentity(
@@ -374,17 +382,17 @@ contract ERC3643Test is Test {
         );
 
         /// 🔹 Despausamos o contrato antes da transferência
-        abTokenInstance.unpause();
+        RWATokenInstance.unpause();
         vm.stopPrank();
 
         /// 🔹 Agora podemos transferir tokens normalmente
         vm.startPrank(user1);
-        abTokenInstance.transfer(user2, transferAmount);
+        RWATokenInstance.transfer(user2, transferAmount);
         vm.stopPrank();
 
         /// 🔹 Verificamos os saldos finais
-        uint256 user1Balance = abTokenInstance.balanceOf(user1);
-        uint256 user2Balance = abTokenInstance.balanceOf(user2);
+        uint256 user1Balance = RWATokenInstance.balanceOf(user1);
+        uint256 user2Balance = RWATokenInstance.balanceOf(user2);
         console.log("User1 Balance after transfer:", user1Balance);
         console.log("User2 Balance after transfer:", user2Balance);
 
@@ -400,10 +408,14 @@ contract ERC3643Test is Test {
         );
     }
 
-     /// @dev Teste de deployment
-     function testDeployment() public view {
-        string memory tokenName = abTokenInstance.name();
+    /// @dev Teste de deployment
+    function testDeployment() public view {
+        string memory tokenName = RWATokenInstance.name();
         console.log("Token Name:", tokenName);
-        assertEq(tokenName, "TestABToken", "Nome do abTokenInstance incorreto");
+        assertEq(
+            tokenName,
+            "TestRWAToken",
+            "Nome do RWATokenInstance incorreto"
+        );
     }
 }
