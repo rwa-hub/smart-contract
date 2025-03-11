@@ -3,3 +3,4 @@ out/
 lib/
 target/
 .env
+node_modules/
