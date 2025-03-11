@@ -1,13 +1,13 @@
 {
   "name": "rwa-smart-contract",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A ERC4636 Smart Contract based in Compliance for RWA Tokenization.",
   "directories": {
     "doc": "docs",
     "test": "test"
   },
   "scripts": {
-     "release": "standard-version"
+    "release": "standard-version"
   },
   "repository": {
     "type": "git",
