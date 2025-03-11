@@ -1,6 +1,26 @@
 {
-  "solidity.compileUsingRemoteVersion": "v0.8.17+commit.8df45f5f",
-  "solidity.defaultFormatter": "NomicFoundation.hardhat-solidity",
+  "solidity.defaultFormatter": "nomicfoundation.hardhat-solidity",
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "solidity.formatter": "prettier",
+  "solidity.packageDefaultDependenciesContractsDirectory": "src",
+  "solidity.packageDefaultDependenciesDirectory": "lib",
+  "solidity.enabledAsYouTypeCompilationErrorCheck": true,
+  "solidity.validationDelay": 1500,
+  "solidity.linter": "solhint",
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.fontFamily": "MesloLGS NF",
+  "workbench.colorTheme": "Default Dark+",
+  "workbench.iconTheme": "vscode-icons",
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  "editor.fontSize": 14,
   "editor.formatOnSave": true,
   "wake.compiler.solc.remappings": [
     "openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",

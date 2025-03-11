@@ -1,0 +1,33 @@
+{
+  "name": "rwa-smart-contract",
+  "version": "1.0.0",
+  "description": "A ERC4636 Smart Contract based in Compliance for RWA Tokenization.",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+     "release": "standard-version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rwa-hub/rwa-smart-contract.git"
+  },
+  "keywords": [],
+  "author": "Renan Correa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rwa-hub/rwa-smart-contract/issues"
+  },
+  "standard-version": {
+    "scripts": {
+      "postbump": "echo 'Version updated!'",
+      "postchangelog": "git add CHANGELOG.md",
+      "postcommit": "git push --follow-tags origin main"
+    }
+  },
+  "homepage": "https://github.com/rwa-hub/rwa-smart-contract#readme",
+  "dependencies": {
+    "standard-version": "^9.5.0"
+  }
+}

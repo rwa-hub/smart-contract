@@ -9,7 +9,11 @@
         "ms-vscode.vscode-typescript-tslint-plugin",
         "angular.ng-template",
         "esbenp.prettier-vscode",
-        "dbaeumer.vscode-eslint"
+        "dbaeumer.vscode-eslint",
+        "vscode-icons-team.vscode-icons",
+        "nomicfoundation.hardhat-solidity",
+        "tamasfe.even-better-toml",
+        "humao.rest-client"
       ]
     }
   }
