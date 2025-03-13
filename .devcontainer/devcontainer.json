@@ -1,19 +1,37 @@
 {
   "name": "Blockchain Development",
   "image": "ghcr.io/trailofbits/eth-security-toolbox:nightly",
-  "features": {},
-  "postCreateCommand": "",
+  "workspaceMount": "type=bind,source=/Users/hub/Documents/Development/smart-contract,target=/workspaces/blockchain,consistency=cached",
+  "workspaceFolder": "/workspaces/blockchain",
+  "remoteUser": "root",
+  "mounts": [
+    {
+      "type": "volume",
+      "source": "blockchain-npm-cache",
+      "target": "/root/.npm"
+    },
+    {
+      "type": "volume",
+      "source": "vscode-extensions",
+      "target": "/root/.vscode-server/extensions"
+    }
+  ],
   "customizations": {
     "vscode": {
+      "settings": {
+        "extensions.autoUpdate": false,
+        "extensions.autoCheckUpdates": false
+      },
       "extensions": [
         "ms-vscode.vscode-typescript-tslint-plugin",
         "angular.ng-template",
         "esbenp.prettier-vscode",
         "dbaeumer.vscode-eslint",
         "vscode-icons-team.vscode-icons",
-        "nomicfoundation.hardhat-solidity",
+        "juanblanco.solidity",
         "tamasfe.even-better-toml",
-        "humao.rest-client"
+        "humao.rest-client",
+        "pomdtr.excalidraw-editor"
       ]
     }
   }

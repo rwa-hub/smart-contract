@@ -1,19 +1,21 @@
 {
-  "solidity.defaultFormatter": "nomicfoundation.hardhat-solidity",
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit",
     "source.organizeImports": "explicit"
   },
-  "solidity.formatter": "prettier",
-  "solidity.packageDefaultDependenciesContractsDirectory": "src",
-  "solidity.packageDefaultDependenciesDirectory": "lib",
+  "solidity.compileUsingLocalVersion": "0.8.17",
+  // "solidity.packageDefaultDependenciesContractsDirectory": "src",
+  // "solidity.packageDefaultDependenciesDirectory": "lib",
+  "[solidity]": {
+    "editor.defaultFormatter": "JuanBlanco.solidity"
+  },
   "solidity.enabledAsYouTypeCompilationErrorCheck": true,
   "solidity.validationDelay": 1500,
   "solidity.linter": "solhint",
   "terminal.integrated.defaultProfile.osx": "zsh",
-  "terminal.integrated.fontFamily": "MesloLGS NF",
+  "terminal.integrated.fontFamily": "monospace",
   "workbench.colorTheme": "Default Dark+",
   "workbench.iconTheme": "vscode-icons",
   "git.enableSmartCommit": true,
@@ -22,19 +24,14 @@
   "files.autoSaveDelay": 1000,
   "editor.fontSize": 14,
   "editor.formatOnSave": true,
-  "wake.compiler.solc.remappings": [
+  "solidity.remappings": [
     "openzeppelin-contracts/=lib/openzeppelin-contracts/contracts/",
     "@openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/",
     "@erc3643/contracts/=lib/T-REX/contracts/",
     "@onchain-id/=lib/T-REX/node_modules/@onchain-id/",
     "T-REX/=lib/T-REX/contracts/",
     "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
-    "erc4626-tests/=lib/openzeppelin-contracts/lib/erc4626-tests/",
-    "eth-gas-reporter/=lib/T-REX/node_modules/eth-gas-reporter/",
-    "forge-std/=lib/forge-std/src/",
-    "halmos-cheatcodes/=lib/openzeppelin-contracts/lib/halmos-cheatcodes/src/",
-    "hardhat/=lib/T-REX/node_modules/hardhat/",
-    "ds-test/=lib/openzeppelin-contracts/lib/forge-std/lib/ds-test/src/",
-    "openzeppelin-contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/"
-  ]
+    "forge-std/=lib/forge-std/src/"
+  ],
+  "solidity.compileUsingRemoteVersion": "v0.8.17+commit.8df45f5f"
 }

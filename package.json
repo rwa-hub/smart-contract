@@ -7,7 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "release": "standard-version"
+    "release": "standard-version",
+    "register-kyc-users": "forge script scripts/RegisterIdentityOfUsers.s.sol:RegisterIdentityOfUsers --rpc-url http://host.docker.internal:8545 --private-key $PRIVATE_KEY --broadcast --legacy --gas-price 0",
+    "deploy": "forge script scripts/Deploy.s.sol:Deploy --rpc-url http://host.docker.internal:8545 --private-key $PRIVATE_KEY --broadcast --legacy --gas-price 0"
   },
   "repository": {
     "type": "git",

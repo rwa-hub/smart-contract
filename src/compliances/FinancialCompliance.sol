@@ -141,9 +141,6 @@ contract FinancialCompliance is AbstractModule, OwnableUpgradeable {
     function moduleTransferAction(
         address,
         address,
-        uint256
-    ) external override // solhint-disable-next-line
-    {
-
-    }
+        uint256 // solhint-disable-next-line
+    ) external override {}
 }
