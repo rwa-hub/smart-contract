@@ -91,10 +91,10 @@ contract Deploy is Script {
         rwaCompliance.transferOwnership(owner);
 
         /// 🔹 Adiciona o owner como agente supervisionador
-        identityRegistryStorage.addAgent(owner);
-        identityRegistryStorage.addAgent(address(identityRegistry));
-        identityRegistry.addAgent(owner);
-        rWAToken.addAgent(owner);
+        // identityRegistryStorage.addAgent(owner);
+        // identityRegistryStorage.addAgent(address(identityRegistry));
+        // identityRegistry.addAgent(owner);
+        // rWAToken.addAgent(owner);
 
         vm.stopBroadcast();
     }

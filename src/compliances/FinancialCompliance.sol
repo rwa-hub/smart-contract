@@ -23,7 +23,16 @@ contract FinancialCompliance is AbstractModule, OwnableUpgradeable {
     uint256 public immutable minTransactionValue = 1 ether;
 
     /// 🔹 Eventos para auditoria
-    event BuyerApproved(address indexed buyer);
+    event BuyerApproved(
+        address indexed buyer,
+        bool creditInsuranceApproved,
+        bool serasaClearance,
+        bool documentsVerified,
+        uint256 income,
+        string indexed addressVerified,
+        bool saleRegistered,
+        bool indexed signedAgreement
+    );
     event ComplianceCheckPassed(
         address indexed from,
         address indexed to,
@@ -48,6 +57,15 @@ contract FinancialCompliance is AbstractModule, OwnableUpgradeable {
     }
 
     /// 🔹 Aprovação de comprador com verificação única
+    /// @dev Aprova um novo comprador após verificações de compliance
+    /// @param buyer Endereço do comprador a ser aprovado
+    /// @param creditInsuranceApproved Status da aprovação do seguro de crédito
+    /// @param serasaClearance Status da verificação no Serasa
+    /// @param documentsVerified Status da verificação dos documentos
+    /// @param income Renda mensal do comprador em wei
+    /// @param addressVerified Endereço verificado do comprador
+    /// @param saleRegistered Status do registro da venda
+    /// @param signedAgreement Status da assinatura do contrato
     function approveBuyer(
         address buyer,
         bool creditInsuranceApproved,
@@ -71,7 +89,16 @@ contract FinancialCompliance is AbstractModule, OwnableUpgradeable {
             signedAgreement: signedAgreement
         });
 
-        emit BuyerApproved(buyer);
+        emit BuyerApproved(
+            buyer,
+            creditInsuranceApproved,
+            serasaClearance,
+            documentsVerified,
+            income,
+            addressVerified,
+            saleRegistered,
+            signedAgreement
+        );
     }
 
     /// @dev  verifica se uma transação entre duas partes cumpre os critérios de compliance antes que o token seja transferido.
