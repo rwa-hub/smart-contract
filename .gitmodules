@@ -1,19 +1,13 @@
-[submodule "smart-contract/lib/forge-std"]
-	path = smart-contract/lib/forge-std
+[submodule "lib/forge-std"]
+	path = lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
-[submodule "smart-contract/lib/openzeppelin-contracts"]
-	path = smart-contract/lib/openzeppelin-contracts
-	url = https://github.com/OpenZeppelin/openzeppelin-contracts
-[submodule "smart-contract/lib/T-REX"]
-	path = smart-contract/lib/T-REX
-	url = https://github.com/TokenySolutions/T-REX
-[submodule "smart-contract/lib/openzeppelin-contracts-upgradeable"]
-	path = smart-contract/lib/openzeppelin-contracts-upgradeable
-	url = https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable
-
 [submodule "lib/openzeppelin-contracts"]
 	path = lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "lib/T-REX"]
+	path = lib/T-REX
+	url = https://github.com/TokenySolutions/T-REX
 [submodule "lib/openzeppelin-contracts-upgradeable"]
 	path = lib/openzeppelin-contracts-upgradeable
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable
+
