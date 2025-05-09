@@ -8,13 +8,13 @@
   },
   "scripts": {
     "release": "standard-version",
-    "add-agent": "forge script scripts/AddAgent.s.sol:AddAgent --rpc-url http://host.docker.internal:8545 --private-key $PRIVATE_KEY --broadcast --legacy --gas-price 0",
-    "remove-agent": "forge script scripts/RemoveAgent.s.sol:RemoveAgent --rpc-url http://host.docker.internal:8545 --private-key $PRIVATE_KEY --broadcast --legacy --gas-price 0",
-    "register-kyc-users": "forge script scripts/RegisterKYCCountry.s.sol:RegisterKYCCountry --rpc-url http://host.docker.internal:8545 --private-key $PRIVATE_KEY --broadcast --legacy --gas-price 0",
-    "update-kyc-country": "forge script scripts/UpdateKYCCountry.s.sol:UpdateKYCCountry --rpc-url http://host.docker.internal:8545 --private-key $PRIVATE_KEY --broadcast --legacy --gas-price 0",
-    "approve-buyer": "forge script scripts/ApproveBuyer.s.sol:ApproveBuyer --rpc-url http://host.docker.internal:8545 --private-key $PRIVATE_KEY --broadcast --legacy --gas-price 0",
-    "mint": "forge script scripts/MintTokenRWA.s.sol:MintTokenRWA --rpc-url http://host.docker.internal:8545 --private-key $PRIVATE_KEY --broadcast --legacy --gas-price 0",
-    "deploy": "forge script scripts/Deploy.s.sol:Deploy --rpc-url http://host.docker.internal:8545 --private-key $PRIVATE_KEY --broadcast --legacy --gas-price 0"
+    "add-agent": "forge script scripts/AddAgent.s.sol:AddAgent --rpc-url http://localhost:8545 --private-key $PRIVATE_KEY --broadcast --legacy --gas-price 0",
+    "remove-agent": "forge script scripts/RemoveAgent.s.sol:RemoveAgent --rpc-url http://localhost:8545 --private-key $PRIVATE_KEY --broadcast --legacy --gas-price 0",
+    "register-kyc-users": "forge script scripts/RegisterKYCCountry.s.sol:RegisterKYCCountry --rpc-url http://localhost:8545 --private-key $PRIVATE_KEY --broadcast --legacy --gas-price 0",
+    "update-kyc-country": "forge script scripts/UpdateKYCCountry.s.sol:UpdateKYCCountry --rpc-url http://localhost:8545 --private-key $PRIVATE_KEY --broadcast --legacy --gas-price 0",
+    "approve-buyer": "forge script scripts/ApproveBuyer.s.sol:ApproveBuyer --rpc-url http://localhost:8545 --private-key $PRIVATE_KEY --broadcast --legacy --gas-price 0",
+    "mint": "forge script scripts/MintTokenRWA.s.sol:MintTokenRWA --rpc-url http://localhost:8545 --private-key $PRIVATE_KEY --broadcast --legacy --gas-price 0",
+    "deploy": "forge script scripts/Deploy.s.sol:Deploy --rpc-url http://localhost:8545 --private-key $PRIVATE_KEY --broadcast --legacy --gas-price 0"
   },
   "repository": {
     "type": "git",

@@ -3,6 +3,7 @@ TREX_DIR := lib/T-REX
 FORGE := forge
 NPM := npm
 GIT := git
+PRIVATE_KEY := 0xae6ae8e5ccbfb04590405997ee2d52d2b330726137b875053c36d94e974d162f
 
 # Cores para output
 GREEN := \033[0;32m
@@ -10,7 +11,7 @@ RED := \033[0;31m
 YELLOW := \033[0;33m
 NC := \033[0m # No Color
 
-.PHONY: all install update clean remove build test reset-submodules install-deps help trex-setup trex-build trex-test check
+.PHONY: all install update clean remove build test reset-submodules install-deps help trex-setup trex-build trex-test check clean-deployments deploy
 
 # Target padrão mostra o help
 .DEFAULT_GOAL := help
@@ -27,6 +28,8 @@ help:
 	@echo "  $(YELLOW)make check$(NC)           - Executa verificações de qualidade de código"
 	@echo "  $(YELLOW)make reset-submodules$(NC)- Reseta e reinicializa submódulos"
 	@echo "  $(YELLOW)make install-dep$(NC)     - Instala uma nova dependência Forge (use dep=nome)"
+	@echo "  $(YELLOW)make clean-deployments$(NC) - Limpa cache de deployments"
+	@echo "  $(YELLOW)make deploy$(NC)          - Realiza o deploy dos contratos"
 
 # Reseta e reinicializa os submódulos
 reset-submodules:
@@ -112,3 +115,16 @@ install-dep:
 	@echo "$(YELLOW)Instalando dependência: $(dep)$(NC)"
 	@$(FORGE) install $(dep)
 	@echo "$(GREEN)Dependência instalada com sucesso!$(NC)"
+
+# Limpa cache de deployments
+clean-deployments:
+	@echo "$(YELLOW)Limpando cache de deployments...$(NC)"
+	@rm -rf broadcast/
+	@rm -rf cache/
+	@echo "$(GREEN)Cache de deployments limpo!$(NC)"
+
+# Deploy dos contratos
+deploy:
+	@echo "$(YELLOW)Iniciando deploy dos contratos...$(NC)"
+	@export PRIVATE_KEY=$(PRIVATE_KEY) && $(NPM) run deploy
+	@echo "$(GREEN)Deploy concluído com sucesso!$(NC)"
