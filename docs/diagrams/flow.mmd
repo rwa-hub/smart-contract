@@ -1,0 +1,24 @@
+%%{init: {'theme': 'base', 'themeVariables': { 'fontSize': '16px', 'background': 'transparent'}}}%%
+sequenceDiagram
+    participant I as Investor
+    participant T as Token
+    participant ID as Identity
+    participant C as Compliance
+    participant K as KYC
+
+    rect rgb(240, 248, 255, 0.5)
+        Note over I,K: Processo de Registro
+        I->>ID: Solicita Registro
+        ID->>K: Verifica Identidade
+        K-->>ID: Confirma Verificação
+        ID-->>I: Registro Aprovado
+    end
+    
+    rect rgb(245, 255, 245, 0.5)
+        Note over I,T: Processo de Transferência
+        I->>T: Solicita Transferência
+        T->>ID: Verifica Identidade
+        T->>C: Verifica Regras
+        C-->>T: Aprova/Rejeita
+        T-->>I: Executa/Rejeita Transferência
+    end 

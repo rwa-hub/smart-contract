@@ -1,0 +1,29 @@
+graph TB
+    subgraph Sistema_de_Roles
+        AG[Agent]
+        AD[Admin]
+        OP[Operator]
+        US[Usuário]
+        KYC[KYC]
+        T[Token]
+        CR[Compliance]
+        IR[Identity]
+        MP[Marketplace]
+    end
+
+    AG -->|Gerencia| KYC
+    AD -->|Configura| T
+    AD -->|Gerencia| CR
+    AD -->|Controla| IR
+    OP -->|Opera| MP
+    US -->|Interage| T
+
+    style AG fill:#2E86C1
+    style AD fill:#3498DB
+    style OP fill:#2ECC71
+    style US fill:#F1C40F
+    style KYC fill:#85C1E9
+    style T fill:#ABEBC6
+    style CR fill:#F9E79F
+    style IR fill:#F5B7B1
+    style MP fill:#D5F5E3 

@@ -126,5 +126,6 @@ clean-deployments:
 # Deploy dos contratos
 deploy:
 	@echo "$(YELLOW)Iniciando deploy dos contratos...$(NC)"
-	@export PRIVATE_KEY=$(PRIVATE_KEY) && $(NPM) run deploy
+	@export PRIVATE_KEY=$(PRIVATE_KEY) && $(FORGE) script scripts/Deploy.s.sol --broadcast --verify
+	@node scripts/save-addresses.js
 	@echo "$(GREEN)Deploy concluído com sucesso!$(NC)"
